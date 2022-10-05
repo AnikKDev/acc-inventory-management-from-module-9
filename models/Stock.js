@@ -105,6 +105,18 @@ const stockSchema = mongoose.Schema({
             ref: "Store",
             required: true
         }
+    },
+    suppliedBy: {
+        name: {
+            type: String,
+            trim: true,
+            required: [true, "Name required"],
+            id: {
+                type: ObjectId,
+                ref: "Supplier",
+
+            }
+        }
     }
 
 }, {
