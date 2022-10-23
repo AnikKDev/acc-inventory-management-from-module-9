@@ -1,3 +1,4 @@
+const Brand = require("../models/Brand");
 const Product = require("../models/Product");
 
 exports.getProductsService = async (filters, queries) => {
@@ -9,12 +10,18 @@ exports.getProductsService = async (filters, queries) => {
     .sort(queries.sortBy)
 
   const total = await Product.countDocuments(filters)
-  const page = Math.ceil(totalProducts/queries.limit)
-  return {total,page,products};
+  const page = Math.ceil(totalProducts / queries.limit)
+  return { total, page, products };
 };
 
 exports.createProductService = async (data) => {
   const product = await Product.create(data);
+
+  // step 1 -> _id (get the brand name and id from the created product)
+  const { _id: productId, brand } = product;
+  // update brand schema to add this product id and name to that reference
+  const updatedProductDatainBrand = await Brand.updateOne({ _id: brand.id }, { $push: { products: productId } })
+  console.log(updatedProductDatainBrand);
   return product;
 };
 

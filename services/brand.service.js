@@ -6,11 +6,12 @@ module.exports.createBrandService = async (data) => {
 }
 
 module.exports.getBrandsService = async () => {
-    const result = await Brand.find({}).select('-products -suppliers');
+    // const result = await Brand.find({}).select('-products -suppliers');
+    const result = await Brand.find({});
     return result
 }
 module.exports.getBrandByIdService = async (id) => {
-    const result = await Brand.findOne({ _id: id });
+    const result = await Brand.findOne({ _id: id }).populate('products');
     return result
 }
 module.exports.updateBrandService = async (id, data) => {

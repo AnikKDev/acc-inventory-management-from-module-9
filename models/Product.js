@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
+const valid = require("validator");
 // schema design
 const productSchema = mongoose.Schema({
   name: {
@@ -25,7 +26,7 @@ const productSchema = mongoose.Schema({
     }
   },
   // image url array of string. onekgulo image url thakbe. amra prottekta image url er upor map chalabo. chalaye validate kore nibo.
-  imageURLs: [{
+  /* imageURLs: [{
     type: String,
     required: true,
     validate: {
@@ -43,13 +44,18 @@ const productSchema = mongoose.Schema({
       },
       message: "Please provide valid image url"
     }
+  }], */
+  imageURLs: [{
+    type: String,
+    required: true,
+    validate: [valid.isURL, "wrong url"]
   }],
   category: {
     type: String,
     required: true
   },
   brand: {
-    type: String,
+    type: Object,
     required: true,
     id: {
       type: ObjectId,
